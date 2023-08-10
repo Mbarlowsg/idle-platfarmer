@@ -60,13 +60,13 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            print("normal JUmp");
+            // print("normal JUmp");
             isGrounded = false;
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
         else if (queueJump && isGrounded)
         {
-            print("Queue Jump");
+            // print("Queue Jump");
             isGrounded = false;
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
