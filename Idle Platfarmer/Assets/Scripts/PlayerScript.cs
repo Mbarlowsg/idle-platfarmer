@@ -14,6 +14,10 @@ public class PlayerScript : MonoBehaviour
     private bool isGrounded;
     private string GROUND_TAG = "Ground";
 
+    private bool queueJump;
+    private float queueJumpTime = 0.2f;
+    private float currentJumpTime = 0f;
+
     private string ENEMY_TAG = "Enemy";
 
     private Rigidbody2D myBody;
@@ -48,10 +52,36 @@ public class PlayerScript : MonoBehaviour
 
     void PlayerJump()
     {
+        // Delayed Jump
+        if (Input.GetButtonDown("Jump") && !isGrounded)
+        {
+            queueJump = true;
+        }
+
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            print("normal JUmp");
             isGrounded = false;
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        }
+        else if (queueJump && isGrounded)
+        {
+            print("Queue Jump");
+            isGrounded = false;
+            myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        }
+
+        if (queueJump)
+        {
+            if (currentJumpTime >= queueJumpTime)
+            {
+                queueJump = false;
+                currentJumpTime = 0;
+            }
+            else
+            {
+                currentJumpTime += Time.deltaTime;
+            }
         }
     }
 
