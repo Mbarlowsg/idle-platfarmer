@@ -13,6 +13,7 @@ public class PlayerScript : MonoBehaviour
     private float movementX;
     private bool isGrounded;
     private string GROUND_TAG = "Ground";
+    private string SOFT_PLATFORM_TAG = "Soft-Platform";
 
     private bool queueJump;
     private float queueJumpTime = 0.2f;
@@ -71,6 +72,7 @@ public class PlayerScript : MonoBehaviour
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
 
+        // This allows the player to queue a jump
         if (queueJump)
         {
             if (currentJumpTime >= queueJumpTime)
@@ -87,7 +89,10 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(GROUND_TAG))
+        if (
+            collision.gameObject.CompareTag(GROUND_TAG)
+            || collision.gameObject.CompareTag(SOFT_PLATFORM_TAG)
+        )
         {
             isGrounded = true;
         }
