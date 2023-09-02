@@ -17,7 +17,7 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         _playerMoney = GameObject.Find("Player Money").GetComponent<TextMeshProUGUI>();
-        StartCoroutine(MoneyTimer());
+        // StartCoroutine(MoneyTimer());
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class GameManagerScript : MonoBehaviour
     IEnumerator MoneyTimer()
     {
         Player.Money += Player.Mps;
-        print(Player.Money);
+        // print(Player.Money);
         yield return new WaitForSeconds(1f);
         StartCoroutine(MoneyTimer());
     }

@@ -1,38 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GeneratorScript : MonoBehaviour
 {
+    // Logic
     private bool _isPlayerOnTop;
 
-    private Color _highlight;
-    private Color _baseColor;
+    // Instance Properties
+    [SerializeField]
+    private int _type;
 
-    private SpriteRenderer _renderer;
+    [SerializeField]
+    private float _basePrice,
+        _moneyMultiplier;
+
+    private Generator instance = new Generator();
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        instance.Type = _type;
+        instance.GeneratorCount = 1;
+        instance.BasePrice = _basePrice;
+        instance.CurrentCost = _basePrice;
+        instance.MoneyMultiplier = _moneyMultiplier;
+        GeneratorManagerScript.AddGeneratorToList(instance);
+        Debug.Log(instance);
+    }
+
     void Start() { }
 
     // Update is called once per frame
     void Update()
     {
-        if (_isPlayerOnTop == true && Player.Money > 10 && Input.GetKeyDown(KeyCode.E) == true)
+        if (_isPlayerOnTop && Input.GetKeyDown(KeyCode.E) && Player.Money >= instance.CurrentCost)
         {
-            Player.Money -= 10;
-            print("Spent 10");
+            instance.UpgradeGenerator();
+            Debug.Log(instance);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         _isPlayerOnTop = true;
-        _renderer.color = _highlight;
+        print("ontop");
     }
 
     void OnTriggerExit2D(Collider2D collider)
     {
         _isPlayerOnTop = false;
-        _renderer.color = _baseColor;
+        print("off");
     }
 }
